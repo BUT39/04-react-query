@@ -16,7 +16,7 @@ export default function App() {
   const [searchValue, setSearchValue] = useState("");
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError, isSuccess } = useQuery({
     queryKey: ["Movies", searchValue, page],
     queryFn: () => fetchMovies(searchValue, page),
     enabled: searchValue !== "",
@@ -26,10 +26,10 @@ export default function App() {
   const totalPages = data?.total_pages ?? 0;
 
   useEffect(() => {
-    if (data && movies.length === 0) {
+    if (isSuccess && data && movies.length === 0) {
       toast.error("No movies found for your request.");
     }
-  }, [data, movies.length]);
+  }, [isSuccess, data, movies.length]);
 
   const handleSearch = (query: string) => {
     setSearchValue(query);
