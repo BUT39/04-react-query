@@ -9,7 +9,7 @@ import type { Movie } from "../../types/movie";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import MovieModal from "../MovieModal/MovieModal";
 import ReactPaginate from "react-paginate";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 export default function App() {
   const [page, setPage] = useState(1);
@@ -20,6 +20,7 @@ export default function App() {
     queryKey: ["Movies", searchValue, page],
     queryFn: () => fetchMovies(searchValue, page),
     enabled: searchValue !== "",
+    placeholderData: keepPreviousData,
   });
   const movies = data?.results ?? [];
   const totalPages = data?.total_pages ?? 0;
